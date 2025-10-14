@@ -1,0 +1,4 @@
+{
+  "homepage.welcome": "Default Welcome Message",
+  "homepage.fallback": "Fallback (en|cs) test"
+}

@@ -1,4 +1,4 @@
-import {I18N_FALLBACK_LANG} from "@/lib/i18n";
+import {I18N_FALLBACK_LANG} from "@/app/(i18n)";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
