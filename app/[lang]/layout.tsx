@@ -1,14 +1,17 @@
 import I18nLanguageSwitch from "@/components/I18nLanguageSwitch";
-import {type I18nLocale, locales} from "@/lib/i18n";
-import type {Metadata, ResolvingMetadata} from "next";
+import {getTranslations, type I18nLocale, locales} from "@/lib/i18n";
+import type {Metadata} from "next";
 import type {PropsWithChildren} from "react";
 
+import packageJson from "@/package.json";
 import {Geist, Geist_Mono} from "next/font/google";
-import './../globals.css';
+import '@/app/globals.css';
 
-type Props = PropsWithChildren<{
-  params: Promise<{ lang: I18nLocale }>
-}>;
+
+const {description: packageDescription} = packageJson;
+
+export type LangParam = { lang: I18nLocale }
+export type LangParams = { params: Promise<LangParam> };
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,33 +27,24 @@ export function generateStaticParams() {
   return locales.map((lang) => ({lang}));
 }
 
-export async function generateMetadata(
-  {params}: { params: Promise<{ lang: I18nLocale }> },
-  parent: ResolvingMetadata,
-) : Promise<Metadata> {
+export async function generateMetadata({params}: LangParams): Promise<Metadata> {
   const {lang} = await params;
-
-  const titles: Record<I18nLocale, string> = {
-    en: 'App EN',
-    cs: 'App CS',
-  };
-
-  console.log(parent);
+  const {t} = getTranslations(lang);
 
   return {
-    title: titles[lang],
-    description: 'A Next.js application with internationalization support.',
+    title: t('metadata.title'),
+    description: packageDescription
   };
 }
 
-export default async function Layout({children, params,}: Props) {
+export default async function Layout({children, params}: PropsWithChildren<LangParams>) {
   const {lang} = await params;
 
   return (
     <html lang={lang}>
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <I18nLanguageSwitch currentLang={lang}/>
-      {children}
+    <I18nLanguageSwitch currentLang={lang}/>
+    {children}
     </body>
     </html>
   );

@@ -1,5 +1,6 @@
 {
   "name": "image-editor-versioned-example",
+  "description": "Next.js example project demonstrating versioned image editor",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -1,9 +1,26 @@
-import {getTranslations, type I18nLocale} from "@/lib/i18n";
+import type {LangParams} from "@/app/[lang]/layout";
+import {defaultLocale, getTranslations, locales} from "@/lib/i18n";
+import type {Metadata, ResolvingMetadata} from "next";
 import type {SearchParams} from "next/dist/server/request/search-params";
 
-type Props = {
-  params: Promise<{ lang: I18nLocale }>;
+type Props = LangParams & {
   searchParams: Promise<SearchParams>
+}
+
+export async function generateMetadata({params}: LangParams, _parent: ResolvingMetadata): Promise<Metadata> {
+  const {lang: _lang} = await params;
+  const {title, description} = await _parent;
+
+  return {
+    title,
+    description,
+    alternates: {
+      languages: locales.reduce((acc, locale) => {
+        acc[locale] = locale === defaultLocale ? '/' : `/${locale}`;
+        return acc;
+      }, {} as Record<string, string>),
+    }
+  };
 }
 
 export default async function Page({params}: Props) {
