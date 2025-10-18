@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
+  data     Json?    @db.JsonB
+  uploads  Upload[]
+  role     UserRole @default(USER)
+}
+
+model Upload {
+  id        Int      @id @unique @default(autoincrement())
+  name      String   @db.VarChar(32)
+  data      Json?    @db.JsonB // extra optional data
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  timeStamp DateTime @default(now()) @db.Date // start date, format: YYYY-MM-DD
+  edits     Edit[]
+}
+
+model Edit {
+  id       Int      @id @unique @default(autoincrement())
+  date     DateTime @default(now()) @db.Date // habit activity completion date, format: YYYY-MM-DD
+  Upload   Upload   @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+  uploadId Int
+}

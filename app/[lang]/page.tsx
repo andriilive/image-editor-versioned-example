@@ -3,7 +3,7 @@ import {defaultLocale, getTranslations, locales} from "@/lib/i18n";
 import type {Metadata, ResolvingMetadata} from "next";
 import type {SearchParams} from "next/dist/server/request/search-params";
 
-type Props = LangParams & {
+type PageProps = LangParams & {
   searchParams: Promise<SearchParams>
 }
 
@@ -23,7 +23,7 @@ export async function generateMetadata({params}: LangParams, _parent: ResolvingM
   };
 }
 
-export default async function Page({params}: Props) {
+export default async function Page({params}: PageProps) {
   const {lang} = await params;
   const {t} = getTranslations(lang);
 
