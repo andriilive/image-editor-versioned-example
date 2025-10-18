@@ -1,16 +1,19 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import {useSession, signOut} from "@/lib/auth-client";
+import {signOut, useSession} from "@/lib/auth-client";
+import {getTranslations, type I18nLocale} from "@/lib/i18n";
+import {useParams, useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 export default function DashboardPage() {
   const router = useRouter();
+  const {lang} = useParams();
   const {data: session, isPending} = useSession();
+  const {t, getHref} = getTranslations(lang as I18nLocale);
 
   useEffect(() => {
     if (!isPending && !session?.user) {
-      router.push("/user/sign-in");
+      router.push(getHref('/user/sign-in'));
     }
   }, [
     isPending,
@@ -27,17 +30,24 @@ export default function DashboardPage() {
   const {user} = session;
 
   return (
-    <main className="max-w-md h-screen flex items-center justify-center flex-col mx-auto p-6 space-y-4 text-white">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p>Welcome, {user.name || "User"}!</p>
-      <p>Email: {user.email}</p>
+    <>
+      <h1 className="text-2xl font-bold">{t('user.dashboard')}</h1>
+
+      <div className="bg-gray-50">
+        {Object.entries(user).map(([key, value]) => (
+          <div key={key} className="flex justify-between p-4 border-b">
+            <span className="font-medium text-gray-700">{key}</span>
+            <span className="text-gray-900">{String(value)}</span>
+          </div>
+        ))}
+      </div>
 
       <button
         onClick={() => signOut()}
         className="w-full bg-white text-black font-medium rounded-md px-4 py-2 hover:bg-gray-200"
       >
-        Sign Out
+        {t('user.signOut')}
       </button>
-    </main>
+    </>
   );
 }

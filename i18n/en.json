@@ -9,5 +9,6 @@
 
   "user.dashboard": "User Dashboard",
   "user.signIn": "Sign In",
-  "user.signUp": "Sign Up"
+  "user.signUp": "Sign Up",
+  "user.signOut": "Sign Out"
 }

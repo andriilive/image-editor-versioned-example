@@ -6,5 +6,6 @@
 
   "user.dashboard": "Uživatelský panel",
   "user.signIn": "Přihlásit se",
-  "user.signUp": "Registrace"
+  "user.signUp": "Registrace",
+  "user.signOut": "Odhlásit se"
 }

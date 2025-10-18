@@ -11,7 +11,7 @@ export default function SignInForm({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
 
@@ -33,7 +33,7 @@ export default function SignInForm({
 
   return (
     <>
-      <form onSubmit={handleSignUp} className="space-y-4">
+      <form onSubmit={handleSignIn} className="space-y-4">
         {children}
       </form>
       {error && <p className="text-red-500">{error}</p>}
