@@ -47,7 +47,7 @@ export default async function Layout({children, params}: PropsWithChildren<LangP
       <aside className="border-t border-b text-xs">
         <Nav lang={lang}/>
       </aside>
-      <main className="p-1 py-4">
+      <main className="p-1">
         {children}
       </main>
     </body>

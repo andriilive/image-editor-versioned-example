@@ -25,13 +25,13 @@ export default async function Page({params}: PageProps) {
       <h1 className="text-4xl sm:text-5xl font-bold text-center sm:text-left">
         {t('user.title')}
       </h1>
-      <div>
+      <aside className="text-xs flex space-x-2">
         {userActions.map(({href, labelKey}) => (
           <Link href={getHref(href)} key={href} className="block underline my-2">
             {t(labelKey)}
           </Link>
         ))}
-      </div>
+      </aside>
     </>
   );
 }

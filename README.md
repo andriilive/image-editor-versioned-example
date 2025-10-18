@@ -14,6 +14,16 @@ pnpm dev
 bun dev
 ```
 
+## Test user:
+
+```json
+{
+  "email": "user@digitalandy.eu",
+  "password": "duzbem-2vypfI-qanpew",
+  "name": "Test User"
+}
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/HomepageTemplate.tsx`. The page auto-updates as you edit the file.
