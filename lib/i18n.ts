@@ -13,7 +13,7 @@ const defaultLocale = locales[0];
 
 export type I18nLocale = (typeof locales)[number];
 
-type I18nAnyKey = I18nEnKey | I18nCsKey;
+export type I18nAnyKey = I18nEnKey | I18nCsKey;
 
 export const languagesMap: Record<I18nLocale, Record<string, string>> = {
   en: i18nEnJson,
@@ -30,10 +30,26 @@ function getString(key: I18nAnyKey, lang: I18nLocale = defaultLocale): string {
   return defaultDictionary[key as keyof typeof defaultDictionary] || String('key not found ' + key);
 }
 
+
+function getHref(href: string, lang: I18nLocale = defaultLocale): string {
+  if (lang === defaultLocale) {
+    return href;
+  }
+  return `/${lang}${href}`;
+}
+
 const getTranslations = (lang: I18nLocale = defaultLocale) => {
   return {
     t: (key: I18nAnyKey) => getString(key, lang),
+    getHref: (href: string)=> getHref(href, lang),
   }
+}
+
+const transformUrlWithLocale = (url: string, lang: I18nLocale = defaultLocale): string => {
+  if (lang === defaultLocale) {
+    return url;
+  }
+  return `/${lang}${url}`;
 }
 
 export {locales, defaultLocale, getTranslations};

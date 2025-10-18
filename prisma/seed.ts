@@ -1,23 +1,16 @@
-import {PrismaClient, type Prisma} from './generated/client';
+import {saltAndHashPassword} from "@/lib/utils/password";
+import {PrismaClient, type Prisma} from '@prisma/client';
 
 const prismaClient = new PrismaClient();
 
 const userData: Prisma.UserCreateInput[] = [
   {
     email: 'admin@example.com',
-    password: 'admin',
-    role: "ADMIN",
-    data: {
-      fullName: 'Admin User',
-    },
+    password: saltAndHashPassword('admin'),
   },
   {
     email: 'user@example.com',
-    password: 'user',
-    role: "USER",
-    data: {
-      fullName: 'Regular User',
-    }
+    password: saltAndHashPassword('user'),
   },
 ];
 

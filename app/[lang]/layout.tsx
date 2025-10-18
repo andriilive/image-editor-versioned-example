@@ -1,4 +1,5 @@
 import I18nLanguageSwitch from "@/components/I18nLanguageSwitch";
+import Nav from "@/components/Nav";
 import {getTranslations, type I18nLocale, locales} from "@/lib/i18n";
 import type {Metadata} from "next";
 import type {PropsWithChildren} from "react";
@@ -6,7 +7,6 @@ import type {PropsWithChildren} from "react";
 import packageJson from "@/package.json";
 import {Geist, Geist_Mono} from "next/font/google";
 import '@/app/globals.css';
-
 
 const {description: packageDescription} = packageJson;
 
@@ -42,9 +42,14 @@ export default async function Layout({children, params}: PropsWithChildren<LangP
 
   return (
     <html lang={lang}>
-    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-    <I18nLanguageSwitch currentLang={lang}/>
-    {children}
+    <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}>
+      <I18nLanguageSwitch currentLang={lang}/>
+      <aside className="border-t border-b text-xs">
+        <Nav lang={lang}/>
+      </aside>
+      <main className="p-1 py-4">
+        {children}
+      </main>
     </body>
     </html>
   );

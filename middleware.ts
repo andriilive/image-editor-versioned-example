@@ -2,6 +2,8 @@ import {defaultLocale, locales} from "@/lib/i18n";
 import {matchLocale} from "@/lib/utils/matchLocale";
 import {NextRequest, NextResponse} from "next/server";
 
+export {auth as middlewareAuth} from "@/lib/auth"
+
 export function middleware(request: NextRequest) {
   const {pathname} = request.nextUrl;
 

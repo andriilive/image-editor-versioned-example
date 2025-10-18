@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/client"
 }
 
 datasource db {
@@ -8,33 +7,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
-
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique @db.VarChar(255)
-  password String   @db.VarChar(255)
-  data     Json?    @db.JsonB
-  uploads  Upload[]
-  role     UserRole @default(USER)
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("user")
 }
 
-model Upload {
-  id        Int      @id @unique @default(autoincrement())
-  name      String   @db.VarChar(32)
-  data      Json?    @db.JsonB // extra optional data
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
-  timeStamp DateTime @default(now()) @db.Date // start date, format: YYYY-MM-DD
-  edits     Edit[]
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
 }
 
-model Edit {
-  id       Int      @id @unique @default(autoincrement())
-  date     DateTime @default(now()) @db.Date // habit activity completion date, format: YYYY-MM-DD
-  Upload   Upload   @relation(fields: [uploadId], references: [id], onDelete: Cascade)
-  uploadId Int
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
 }
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+// enum UserRole {
+//   USER
+//   ADMIN
+// }
+
+// model Upload {
+//   id        Int      @id @unique @default(autoincrement())
+//   name      String   @db.VarChar(32)
+//   data      Json?    @db.JsonB // extra optional data
+//   User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId    Int
+//   timeStamp DateTime @default(now()) @db.Date // start date, format: YYYY-MM-DD
+//   edits     Edit[]
+// }
+
+// model Edit {
+//   id       Int      @id @unique @default(autoincrement())
+//   date     DateTime @default(now()) @db.Date // habit activity completion date, format: YYYY-MM-DD
+//   Upload   Upload   @relation(fields: [uploadId], references: [id], onDelete: Cascade)
+//   uploadId Int
+// }
