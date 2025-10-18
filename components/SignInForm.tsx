@@ -1,42 +1,43 @@
-'use client';
-
-import {signIn} from "@/lib/auth-client";
-import {useRouter} from "next/navigation";
-import {type PropsWithChildren, useState} from "react";
+import SignInFormClient from "@/components/SignInFormClient";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {getTranslations, type I18nLocale} from "@/lib/i18n";
+import {testUser} from "@/lib/utils";
 
 export default function SignInForm({
-  children,
-  redirectUrl = '/user/dashboard',
-}: PropsWithChildren<{ redirectUrl?: string }>) {
-  const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
-
-    const formData = new FormData(e.currentTarget);
-
-    const res = await signIn.email({
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    });
-
-    if (res.error) {
-      setError(res.error.message || "Something went wrong.");
-    }
-    else {
-      router.push(redirectUrl);
-    }
-  }
-
-
+  lang,
+  redirectUrl = '/user'
+}: {
+  lang: I18nLocale,
+  redirectUrl?: string,
+}) {
+  const {t, getHref} = getTranslations(lang);
+  const {email, password} = testUser;
   return (
-    <>
-      <form onSubmit={handleSignIn} className="space-y-4">
-        {children}
-      </form>
-      {error && <p className="text-red-500 mt-4">{error}</p>}
-    </>
+    <SignInFormClient redirectUrl={getHref(redirectUrl)} className={"border border-gray-200 p-4 space-y-2"}>
+      <>
+        <h2 className="font-bold">
+          {t('user.signIn')}
+        </h2>
+        <Input
+          name="email"
+          type="email"
+          defaultValue={email}
+          placeholder={email}
+          required
+        />
+        <Input
+          name="password"
+          type="password"
+          defaultValue={password}
+          placeholder={password}
+          required
+          minLength={8}
+        />
+        <Button type="submit">
+          {t('user.signIn')}
+        </Button>
+      </>
+    </SignInFormClient>
   )
 }

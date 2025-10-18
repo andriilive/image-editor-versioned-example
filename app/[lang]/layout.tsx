@@ -42,7 +42,7 @@ export default async function Layout({children, params}: PropsWithChildren<LangP
 
   return (
     <html lang={lang}>
-    <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}>
+    <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans light`}>
       <I18nLanguageSwitch currentLang={lang}/>
       <aside className="border-t border-b text-xs">
         <Nav lang={lang}/>

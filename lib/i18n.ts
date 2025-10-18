@@ -45,11 +45,4 @@ const getTranslations = (lang: I18nLocale = defaultLocale) => {
   }
 }
 
-const transformUrlWithLocale = (url: string, lang: I18nLocale = defaultLocale): string => {
-  if (lang === defaultLocale) {
-    return url;
-  }
-  return `/${lang}${url}`;
-}
-
 export {locales, defaultLocale, getTranslations};

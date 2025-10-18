@@ -1,5 +1,5 @@
 import type {LangParams} from "@/app/[lang]/layout";
-import SignInForm from "@/components/SignInForm";
+import SignInFormClient from "@/components/SignInFormClient";
 import {getTranslations} from "@/lib/i18n";
 import {testUser} from "@/lib/utils";
 
@@ -10,7 +10,7 @@ export default async function SignInPage({params}:LangParams) {
   return (
     <>
       <h1 className="text-2xl font-bold">{t('user.signIn')}</h1>
-      <SignInForm redirectUrl={getHref('/user/dashboard')}>
+      <SignInFormClient redirectUrl={getHref('/user/dashboard')}>
         <>
           <input
             name="email"
@@ -35,7 +35,7 @@ export default async function SignInPage({params}:LangParams) {
             {t('user.signIn')}
           </button>
         </>
-      </SignInForm>
+      </SignInFormClient>
     </>
   );
 }

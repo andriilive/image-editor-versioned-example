@@ -1,24 +1,28 @@
-import type {PageProps} from "@/app/[lang]/page";
+import type {LangParams} from "@/app/[lang]/layout";
+import SignInForm from "@/components/SignInForm";
+import SignUpForm from "@/components/SignUpForm";
 import {getTranslations, type I18nAnyKey} from "@/lib/i18n";
 import Link from "next/link";
 
-const userActions : {
-  href: string;
-  labelKey: I18nAnyKey;
-}[] = [
-  {
-    href: '/user/sign-in',
-    labelKey: 'user.signIn'
-  },
-  {
-    href: '/user/sign-up',
-    labelKey: 'user.signUp'
-  },
-]
+export type UserPageProps = LangParams & {
+  searchParams: Promise<{
+    q?: string;
+  }>
+}
 
-export default async function Page({params}: PageProps) {
+const queryActions = [
+  'signUp',
+  'signIn'
+];
+
+export default async function Page({params, searchParams}: UserPageProps) {
   const {lang} = await params;
   const {t, getHref} = getTranslations(lang);
+
+  const {q} = await searchParams;
+
+  const isSignUp = q === 'signUp';
+  const isSignIn = q === 'signIn';
 
   return (
     <>
@@ -26,12 +30,14 @@ export default async function Page({params}: PageProps) {
         {t('user.title')}
       </h1>
       <aside className="text-xs flex space-x-2">
-        {userActions.map(({href, labelKey}) => (
-          <Link href={getHref(href)} key={href} className="block underline my-2">
-            {t(labelKey)}
+        {queryActions.map((actionLabel) => (
+          <Link href={getHref(`/user?q=${actionLabel}`)} key={actionLabel} className="block underline my-2">
+            {t(`user.${actionLabel}` as I18nAnyKey)}
           </Link>
         ))}
       </aside>
+      {isSignIn && <SignInForm lang={lang}/>}
+      {isSignUp && <SignUpForm lang={lang}/>}
     </>
   );
 }
