@@ -1,12 +1,14 @@
-import {i18n, type I18nSupportedLang} from "@/app/(i18n)";
+import {getTranslations, type I18nLocale} from "@/lib/i18n";
+import type {SearchParams} from "next/dist/server/request/search-params";
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ lang: I18nSupportedLang }>
-}) {
+type Props = {
+  params: Promise<{ lang: I18nLocale }>;
+  searchParams: Promise<SearchParams>
+}
+
+export default async function Page({params}: Props) {
   const {lang} = await params;
-  const {t} = i18n(lang);
+  const {t} = getTranslations(lang);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">

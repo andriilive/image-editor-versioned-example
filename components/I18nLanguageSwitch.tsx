@@ -1,18 +1,15 @@
-'use client';
+import {type I18nLocale, locales} from "@/lib/i18n";
 
-import {i18nLanguages} from "@/app/(i18n)";
-import {useI18n} from "@/app/(i18n)/I18nContext";
-
-export default function I18nLanguageSwitch() {
-  const {language} = useI18n();
-
-  console.log(language);
-
+export default function I18nLanguageSwitch({
+  currentLang,
+}: {
+  currentLang: I18nLocale
+}) {
   return (
     <nav className="language-switch" aria-label="Language Switch">
-      {i18nLanguages.map(lang => {
+      {locales.map(lang => {
 
-        const isCurrent = lang === language;
+        const isCurrent = lang === currentLang;
 
         return (
           <a key={'lang' + lang}
